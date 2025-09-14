@@ -28,7 +28,7 @@
  * - Components: Reusable ShadCN UI components
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LanguageProvider } from './components/LanguageContext';
 import { ArtisticBackground } from './components/ArtisticBackground';
 import { Header } from './components/Header';
@@ -40,6 +40,7 @@ import { PreRegistrationForm } from './components/PreRegistrationForm';
 import { RewardsSection } from './components/RewardsSection';
 import { Footer } from './components/Footer';
 import { Toaster } from './components/ui/sonner';
+import { initPerformanceMonitoring } from './utils/performance';
 
 /**
  * App Component
@@ -47,6 +48,11 @@ import { Toaster } from './components/ui/sonner';
  * @returns {JSX.Element} The complete application layout
  */
 export default function App() {
+  useEffect(() => {
+    // Initialize performance monitoring
+    initPerformanceMonitoring();
+  }, []);
+
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-background text-foreground relative">
@@ -57,7 +63,7 @@ export default function App() {
         <Header />
 
         {/* Main Content */}
-        <main>
+        <main role="main">
           {/* Hero Section */}
           <HeroSection />
 

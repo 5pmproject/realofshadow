@@ -32,7 +32,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './LanguageContext';
 import { Button } from './ui/button';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Image } from './ui/Image';
+import { Section, Container, Flex } from './layout';
 
 /**
  * Hero Section Component
@@ -75,79 +76,106 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <Section
+      id="hero"
+      variant="hero"
+      background="image"
+      aria-label="Game hero section"
+    >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <ImageWithFallback
+        <Image
           src="https://images.unsplash.com/photo-1683660108133-b173c2b4281b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwZmFudGFzeSUyMGNhc3RsZSUyMHNoYWRvd3MlMjBtZWRpZXZhbHxlbnwxfHx8fDE3NTc4MTk0MTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Dark Fantasy Castle"
-          className="w-full h-full object-cover opacity-60"
+          alt="Dark fantasy castle with mysterious shadows"
+          aspectRatio="auto"
+          objectFit="cover"
+          priority
+          sizes="100vw"
+          className="w-full h-full opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-dark-black/60 via-transparent to-dark-black/80"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        {/* Main Title */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-cinzel mb-6 text-fantasy-gold text-glow">
-          {t('gameTitle')}
-        </h1>
+      <Container size="xl" className="relative z-10">
+        <Flex
+          direction="col"
+          align="center"
+          justify="center"
+          gap="lg"
+          className="min-h-screen text-center"
+        >
+          {/* Main Title */}
+          <header>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-cinzel mb-6 text-fantasy-gold text-glow">
+              {t('gameTitle')}
+            </h1>
+          </header>
 
-        {/* Animated Subtitle */}
-        <div className="h-24 md:h-32 flex items-center justify-center mb-8">
-          <p className="text-xl md:text-2xl lg:text-3xl text-foreground leading-relaxed">
-            {currentTextIndex < heroTexts.length ? (
-              <span className="inline-block min-h-[1.5em]">
-                {displayedText}
-                <span className="animate-pulse">|</span>
-              </span>
-            ) : (
-              <span className="animate-fade-in">
-                {t('heroDescription')}
-              </span>
-            )}
-          </p>
-        </div>
+          {/* Animated Subtitle */}
+          <div className="h-24 md:h-32 flex items-center justify-center">
+            <p 
+              className="text-xl md:text-2xl lg:text-3xl text-foreground leading-relaxed max-w-4xl"
+              role="banner"
+              aria-live="polite"
+            >
+              {currentTextIndex < heroTexts.length ? (
+                <span className="inline-block min-h-[1.5em]">
+                  {displayedText}
+                  <span className="animate-pulse" aria-hidden="true">|</span>
+                </span>
+              ) : (
+                <span className="animate-fade-in">
+                  {t('heroDescription')}
+                </span>
+              )}
+            </p>
+          </div>
 
-        {/* CTA Button */}
-        <div className="space-y-4">
-          <Button
-            onClick={scrollToPreRegister}
-            size="lg"
-            className="text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 bg-fantasy-gold hover:bg-ancient-bronze text-dark-black glow-gold transition-all duration-300 transform hover:scale-105"
-          >
-            {t('registerNow')}
-          </Button>
-          
-          {/* Additional info */}
-          <p className="text-sm md:text-base text-muted-foreground">
+          {/* CTA Section */}
+          <Flex direction="col" align="center" gap="md" className="mt-8">
+            <Button
+              onClick={scrollToPreRegister}
+              size="lg"
+              className="text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 bg-fantasy-gold hover:bg-ancient-bronze text-dark-black glow-gold transition-all duration-300 transform hover:scale-105"
+              aria-describedby="cta-description"
+            >
+              {t('registerNow')}
+            </Button>
+            
+            {/* Additional info */}
             {currentTextIndex >= heroTexts.length && (
-              <span className="animate-fade-in">
+              <p 
+                id="cta-description"
+                className="text-sm md:text-base text-muted-foreground animate-fade-in"
+              >
                 {language === 'ko' ? '지금 가입하고 독점 혜택을 받아보세요' : 
                  language === 'ja' ? '今すぐ登録して限定特典を手に入れよう' :
                  'Register now and get exclusive benefits'}
-              </span>
+              </p>
             )}
-          </p>
-        </div>
+          </Flex>
+        </Flex>
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-fantasy-gold rounded-full flex justify-center">
+          <div 
+            className="w-6 h-10 border-2 border-fantasy-gold rounded-full flex justify-center"
+            role="img"
+            aria-label="Scroll down indicator"
+          >
             <div className="w-1 h-3 bg-fantasy-gold rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Decorative Elements */}
-      <div className="absolute top-1/4 left-4 md:left-12 opacity-30">
+      <div className="absolute top-1/4 left-4 md:left-12 opacity-30" aria-hidden="true">
         <div className="w-16 h-16 border-2 border-fantasy-gold rounded-full animate-pulse"></div>
       </div>
-      <div className="absolute bottom-1/4 right-4 md:right-12 opacity-30">
+      <div className="absolute bottom-1/4 right-4 md:right-12 opacity-30" aria-hidden="true">
         <div className="w-12 h-12 border-2 border-ancient-bronze rounded-full animate-pulse delay-1000"></div>
       </div>
-      
-
-    </section>
+    </Section>
   );
 };

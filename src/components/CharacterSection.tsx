@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useLanguage } from './LanguageContext';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Image } from './ui/Image';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import { Section, Container, Grid, Flex } from './layout';
 
 interface Character {
   id: string;
@@ -75,11 +76,18 @@ export const CharacterSection: React.FC = () => {
   );
 
   return (
-    <section id="characters" className="py-16 md:py-24 px-4">
-      <div className="container mx-auto">
+    <Section
+      id="characters"
+      spacing="xl"
+      aria-labelledby="characters-title"
+    >
+      <Container size="xl">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-cinzel text-fantasy-gold mb-6 text-glow">
+        <header className="text-center mb-12">
+          <h2 
+            id="characters-title"
+            className="text-3xl md:text-4xl lg:text-5xl font-cinzel text-fantasy-gold mb-6 text-glow"
+          >
             {t('charactersTitle')}
           </h2>
           <p className="text-lg md:text-xl text-foreground max-w-3xl mx-auto">
@@ -87,52 +95,75 @@ export const CharacterSection: React.FC = () => {
              language === 'ja' ? 'それぞれ異なる能力とプレイスタイルを持つ3人の戦士から1人を選択してください' :
              'Choose one of three warriors, each with different abilities and play styles'}
           </p>
-        </div>
+        </header>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <Grid
+          columns={{ mobile: 1, tablet: 1, desktop: 3 }}
+          gap="lg"
+        >
           {/* Character Selection */}
-          <div className="lg:col-span-1 space-y-4">
-            {characters.map((character) => (
-              <Card 
-                key={character.id}
-                className={`cursor-pointer transition-all duration-300 ${
-                  selectedCharacter === character.id 
-                    ? 'bg-fantasy-gold/20 border-fantasy-gold glow-gold' 
-                    : 'bg-stone-gray/80 border-fantasy-gold/30 hover:border-fantasy-gold/60'
-                }`}
-                onClick={() => setSelectedCharacter(character.id)}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-fantasy-gold/50">
-                      <ImageWithFallback
-                        src={character.imageUrl}
-                        alt={character.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-cinzel text-fantasy-gold mb-1">{character.name}</h3>
-                      <Badge variant="secondary" className="bg-ancient-bronze/20 text-ancient-bronze">
-                        {character.role}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="lg:col-span-1">
+            <Flex direction="col" gap="md">
+              {characters.map((character) => (
+                <Card 
+                  key={character.id}
+                  className={`cursor-pointer transition-all duration-300 ${
+                    selectedCharacter === character.id 
+                      ? 'bg-fantasy-gold/20 border-fantasy-gold glow-gold' 
+                      : 'bg-stone-gray/80 border-fantasy-gold/30 hover:border-fantasy-gold/60'
+                  }`}
+                  onClick={() => setSelectedCharacter(character.id)}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={selectedCharacter === character.id}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedCharacter(character.id);
+                    }
+                  }}
+                >
+                  <CardContent className="p-4">
+                    <Flex align="center" gap="md">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-fantasy-gold/50 flex-shrink-0">
+                        <Image
+                          src={character.imageUrl}
+                          alt={`${character.name} portrait`}
+                          aspectRatio="square"
+                          objectFit="cover"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-cinzel text-fantasy-gold mb-1 truncate">
+                          {character.name}
+                        </h3>
+                        <Badge variant="secondary" className="bg-ancient-bronze/20 text-ancient-bronze">
+                          {character.role}
+                        </Badge>
+                      </div>
+                    </Flex>
+                  </CardContent>
+                </Card>
+              ))}
+            </Flex>
           </div>
 
           {/* Character Details */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Character Image & Info */}
+          <div className="lg:col-span-2">
             <Card className="bg-stone-gray/80 border-fantasy-gold/30 overflow-hidden">
-              <div className="grid md:grid-cols-2 gap-0">
+              <Grid
+                columns={{ mobile: 1, tablet: 2, desktop: 2 }}
+                gap="none"
+              >
+                {/* Character Image */}
                 <div className="relative h-80 md:h-full">
-                  <ImageWithFallback
+                  <Image
                     src={selectedChar.imageUrl}
-                    alt={selectedChar.name}
-                    className="w-full h-full object-cover"
+                    alt={`${selectedChar.name} - ${selectedChar.role}`}
+                    aspectRatio="auto"
+                    objectFit="cover"
+                    className="w-full h-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-black/80 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
@@ -145,61 +176,65 @@ export const CharacterSection: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Character Info */}
                 <CardContent className="p-6">
-                  <p className="text-foreground mb-6 leading-relaxed">
-                    {selectedChar.description}
-                  </p>
+                  <Flex direction="col" gap="lg">
+                    {/* Description */}
+                    <p className="text-foreground leading-relaxed">
+                      {selectedChar.description}
+                    </p>
 
-                  {/* Skills */}
-                  <div className="mb-6">
-                    <h4 className="font-cinzel text-fantasy-gold mb-3">
-                      {language === 'ko' ? '핵심 스킬' : 
-                       language === 'ja' ? 'コアスキル' : 'Core Skills'}
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedChar.skills.map((skill, index) => (
-                        <Badge 
-                          key={index}
-                          variant="outline" 
-                          className="border-fantasy-gold/50 text-fantasy-gold hover:bg-fantasy-gold/20"
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
+                    {/* Skills */}
+                    <div>
+                      <h4 className="font-cinzel text-fantasy-gold mb-3">
+                        {language === 'ko' ? '핵심 스킬' : 
+                         language === 'ja' ? 'コアスキル' : 'Core Skills'}
+                      </h4>
+                      <Flex wrap gap="sm">
+                        {selectedChar.skills.map((skill, index) => (
+                          <Badge 
+                            key={index}
+                            variant="outline" 
+                            className="border-fantasy-gold/50 text-fantasy-gold hover:bg-fantasy-gold/20"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </Flex>
                     </div>
-                  </div>
 
-                  {/* Stats */}
-                  <div>
-                    <h4 className="font-cinzel text-fantasy-gold mb-3">
-                      {language === 'ko' ? '스탯' : 
-                       language === 'ja' ? 'ステータス' : 'Stats'}
-                    </h4>
-                    <div className="space-y-2">
-                      <StatBar 
-                        label={language === 'ko' ? '공격력' : language === 'ja' ? '攻撃力' : 'Attack'} 
-                        value={selectedChar.stats.attack} 
-                      />
-                      <StatBar 
-                        label={language === 'ko' ? '방어력' : language === 'ja' ? '防御力' : 'Defense'} 
-                        value={selectedChar.stats.defense} 
-                      />
-                      <StatBar 
-                        label={language === 'ko' ? '마법력' : language === 'ja' ? '魔法力' : 'Magic'} 
-                        value={selectedChar.stats.magic} 
-                      />
-                      <StatBar 
-                        label={language === 'ko' ? '속도' : language === 'ja' ? '速度' : 'Speed'} 
-                        value={selectedChar.stats.speed} 
-                      />
+                    {/* Stats */}
+                    <div>
+                      <h4 className="font-cinzel text-fantasy-gold mb-3">
+                        {language === 'ko' ? '스탯' : 
+                         language === 'ja' ? 'ステータス' : 'Stats'}
+                      </h4>
+                      <Flex direction="col" gap="sm">
+                        <StatBar 
+                          label={language === 'ko' ? '공격력' : language === 'ja' ? '攻撃力' : 'Attack'} 
+                          value={selectedChar.stats.attack} 
+                        />
+                        <StatBar 
+                          label={language === 'ko' ? '방어력' : language === 'ja' ? '防御力' : 'Defense'} 
+                          value={selectedChar.stats.defense} 
+                        />
+                        <StatBar 
+                          label={language === 'ko' ? '마법력' : language === 'ja' ? '魔法力' : 'Magic'} 
+                          value={selectedChar.stats.magic} 
+                        />
+                        <StatBar 
+                          label={language === 'ko' ? '속도' : language === 'ja' ? '速度' : 'Speed'} 
+                          value={selectedChar.stats.speed} 
+                        />
+                      </Flex>
                     </div>
-                  </div>
+                  </Flex>
                 </CardContent>
-              </div>
+              </Grid>
             </Card>
           </div>
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Section>
   );
 };

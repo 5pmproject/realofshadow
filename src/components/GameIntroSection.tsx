@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from './LanguageContext';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { Image } from './ui/Image';
+import { Section, Container, Grid, Flex } from './layout';
 import { Card, CardContent } from './ui/card';
 
 export const GameIntroSection: React.FC = () => {
@@ -31,24 +32,38 @@ export const GameIntroSection: React.FC = () => {
   ];
 
   return (
-    <section id="game-intro" className="py-16 md:py-24 px-4">
-      <div className="container mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <Section
+      id="game-intro"
+      spacing="xl"
+      aria-labelledby="game-intro-title"
+    >
+      <Container size="xl">
+        <Grid
+          columns={{ mobile: 1, tablet: 1, desktop: 2 }}
+          gap="xl"
+          alignment="center"
+        >
           {/* Text Content */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-cinzel text-fantasy-gold mb-6 text-glow">
+          <Flex direction="col" gap="lg">
+            <header>
+              <h2 
+                id="game-intro-title"
+                className="text-3xl md:text-4xl lg:text-5xl font-cinzel text-fantasy-gold mb-6 text-glow"
+              >
                 {t('gameIntroTitle')}
               </h2>
               <p className="text-lg md:text-xl text-foreground leading-relaxed">
                 {t('gameIntroDesc')}
               </p>
-            </div>
+            </header>
 
             {/* Features Grid */}
-            <div className="grid gap-6">
+            <Flex direction="col" gap="md">
               {features.map((feature, index) => (
-                <Card key={index} className="bg-stone-gray/80 border-fantasy-gold/30 hover:border-fantasy-gold/60 transition-all duration-300 group">
+                <Card 
+                  key={index} 
+                  className="bg-stone-gray/80 border-fantasy-gold/30 hover:border-fantasy-gold/60 transition-all duration-300 group"
+                >
                   <CardContent className="p-6">
                     <h3 className="text-xl font-cinzel text-fantasy-gold mb-3 group-hover:text-glow transition-all">
                       {feature.title}
@@ -59,39 +74,47 @@ export const GameIntroSection: React.FC = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </div>
+            </Flex>
+          </Flex>
 
           {/* Image Content */}
           <div className="relative">
             <div className="relative overflow-hidden rounded-lg border-2 border-fantasy-gold/30">
-              <ImageWithFallback
+              <Image
                 src="https://images.unsplash.com/photo-1501137611759-f29dc6f8b33e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxteXN0aWNhbCUyMGZvcmVzdCUyMGRhcmslMjBmYW50YXN5fGVufDF8fHx8MTc1NzgxOTQxOXww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Mystical Fantasy World"
-                className="w-full h-80 md:h-96 lg:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
+                alt="Mystical fantasy world with dark forests"
+                aspectRatio="landscape"
+                objectFit="cover"
+                className="w-full h-80 md:h-96 lg:h-[500px] hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark-black/60 to-transparent"></div>
               
               {/* Overlay Content */}
               <div className="absolute bottom-6 left-6 right-6">
                 <h3 className="text-xl md:text-2xl font-cinzel text-fantasy-gold mb-2">
-                  {t('language') === 'ko' ? '어둠의 대륙 탐험' : 
-                   t('language') === 'ja' ? '闇の大陸探検' : 'Explore the Dark Continent'}
+                  {language === 'ko' ? '어둠의 대륙 탐험' : 
+                   language === 'ja' ? '闇の大陸探検' : 'Explore the Dark Continent'}
                 </h3>
                 <p className="text-foreground">
-                  {t('language') === 'ko' ? '신비로운 던전과 고대 유적을 발견하세요' :
-                   t('language') === 'ja' ? '神秘的なダンジョンと古代遺跡を発見しよう' :
+                  {language === 'ko' ? '신비로운 던전과 고대 유적을 발견하세요' :
+                   language === 'ja' ? '神秘的なダンジョンと古代遺跡を発見しよう' :
                    'Discover mysterious dungeons and ancient ruins'}
                 </p>
               </div>
             </div>
 
             {/* Decorative Elements */}
-            <div className="absolute -top-4 -right-4 w-8 h-8 border-2 border-ancient-bronze rounded-full opacity-60 animate-pulse"></div>
-            <div className="absolute -bottom-4 -left-4 w-6 h-6 border-2 border-fantasy-gold rounded-full opacity-60 animate-pulse delay-500"></div>
+            <div 
+              className="absolute -top-4 -right-4 w-8 h-8 border-2 border-ancient-bronze rounded-full opacity-60 animate-pulse" 
+              aria-hidden="true"
+            ></div>
+            <div 
+              className="absolute -bottom-4 -left-4 w-6 h-6 border-2 border-fantasy-gold rounded-full opacity-60 animate-pulse delay-500" 
+              aria-hidden="true"
+            ></div>
           </div>
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Section>
   );
 };
