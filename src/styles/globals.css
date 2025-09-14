@@ -193,6 +193,122 @@
     font-family: 'Cinzel', serif;
   }
 
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+
+  /* Color utility classes */
+  .text-fantasy-gold {
+    color: var(--fantasy-gold);
+  }
+
+  .text-dark-black {
+    color: var(--dark-black);
+  }
+
+  .text-ancient-bronze {
+    color: var(--ancient-bronze);
+  }
+
+  .text-blood-red {
+    color: var(--blood-red);
+  }
+
+  .bg-fantasy-gold {
+    background-color: var(--fantasy-gold);
+  }
+
+  .bg-dark-black {
+    background-color: var(--dark-black);
+  }
+
+  .bg-ancient-bronze {
+    background-color: var(--ancient-bronze);
+  }
+
+  .hover\\:bg-ancient-bronze:hover {
+    background-color: var(--ancient-bronze);
+  }
+
+  /* Background utility classes with opacity */
+  .bg-fantasy-gold\\/20 {
+    background-color: rgba(212, 175, 55, 0.2);
+  }
+
+  .bg-stone-gray {
+    background-color: var(--stone-gray);
+  }
+
+  .bg-stone-gray\\/80 {
+    background-color: rgba(42, 42, 42, 0.8);
+  }
+
+  .bg-ancient-bronze\\/20 {
+    background-color: rgba(205, 127, 50, 0.2);
+  }
+
+  /* Border utility classes */
+  .border-fantasy-gold {
+    border-color: var(--fantasy-gold);
+  }
+
+  .border-fantasy-gold\\/30 {
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+
+  .border-fantasy-gold\\/50 {
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+
+  .border-fantasy-gold\\/60 {
+    border-color: rgba(212, 175, 55, 0.6);
+  }
+
+  .hover\\:border-fantasy-gold\\/60:hover {
+    border-color: rgba(212, 175, 55, 0.6);
+  }
+
+  /* Gradient utilities */
+  .from-fantasy-gold {
+    --tw-gradient-from: var(--fantasy-gold);
+    --tw-gradient-to: rgba(212, 175, 55, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  .to-ancient-bronze {
+    --tw-gradient-to: var(--ancient-bronze);
+  }
+
+  .from-dark-black\\/80 {
+    --tw-gradient-from: rgba(13, 13, 13, 0.8);
+    --tw-gradient-to: rgba(13, 13, 13, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  /* Hover background utilities */
+  .hover\\:bg-fantasy-gold\\/20:hover {
+    background-color: rgba(212, 175, 55, 0.2);
+  }
+
+  /* Additional text color utilities */
+  .text-ancient-bronze {
+    color: var(--ancient-bronze);
+  }
+
+  /* Additional border utilities */
+  .border-ancient-bronze {
+    border-color: var(--ancient-bronze);
+  }
+
+  /* Additional background utilities */
+  .bg-blood-red {
+    background-color: var(--blood-red);
+  }
+
+  .bg-stone-gray\\/90 {
+    background-color: rgba(42, 42, 42, 0.9);
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
